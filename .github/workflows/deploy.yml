@@ -1,0 +1,54 @@
+name: Deploy Astro + Laravel
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with: node-version:'20'
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with: php-version:'8.2'
+
+      - name: Install Astro Dependencies
+        working-directory: ./interface
+        run: |
+          npm install
+          npm run build
+
+      - name: Install Laravel Dependencies
+        working-directory: ./engine
+        run: |
+          composer install --no-dev --optimize-autoloader
+
+      # OPTIONAL: Set correct permissions, generate config, clear cache, etc.
+      # - name: PRepare Laravel
+      #   working-directory: ./engine
+      #   run: |
+      #     php artisan config:cache
+
+      - name: Deploy via FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./deploy
+          server-dir: /path/on/server
+
+      - name: Prepare deploy folder
+        run: |
+          mkdir -p deploy
+          cp -r interface/dist/* deploy/
+          cp -r  engine/public/* deploy/
