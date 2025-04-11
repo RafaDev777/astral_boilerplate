@@ -1,0 +1,5 @@
+# laravel 
+/engine/vendor
+/engine/node_modules
+/engine/storage/*.key
+
