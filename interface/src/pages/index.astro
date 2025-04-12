@@ -1,11 +1,17 @@
 ---
+import axios from 'axios';
 import Layout from '../layouts/Layout.astro';
+import PostList from '../components/PostList.vue'
 
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+// fetch from laravel
+// const res = await fetch('http://localhost:8000/api/posts')
+// const posts= await res.json()
+const {data:posts}=await axios.get('http://localhost:8000/api/posts')
+console.log("post",posts)
 ---
 
-<Layout>
+<Layout title="Astro Blog" descripion="A simple blog example using Astro, Vue, and Laravel">
+  <h1 text-3xl font-bold mb-4> Welcome to Astro Blog</h1>
+<PostList client:load :posts="posts" />
 
 </Layout>
