@@ -6,10 +6,12 @@ A monorepo starter for building modern frontends with **Astro + Vue + UnoCSS** a
 
 ## 📁 Folder Structure
 
+```txt
 ├── engine/ # Laravel backend (API, Auth, Database, etc.)
 ├── interface/ # Astro frontend (Vue components, UnoCSS, static site)
 ├── .github/ # GitHub Actions workflows (CI/CD)
 └── README.md
+```
 
 ---
 
